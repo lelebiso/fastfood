@@ -1,36 +1,44 @@
 package it.pegaso2000.fastFoodApi.dto;
 
 public class PiattoDto {
-
-	private int piattoId;
-	private String nomePiatto;
-	private boolean is_vegano;	
-	private int costo;
 	
-	public int getPiattoId() {
-		return piattoId;
-	}
-	public void setPiattoId(int piattoId) {
-		this.piattoId = piattoId;
-	}
-	public String getNomePiatto() {
-		return nomePiatto;
-	}
-	public void setNomePiatto(String nomePiatto) {
-		this.nomePiatto = nomePiatto;
-	}
-	public boolean isIs_vegano() {
-		return is_vegano;
-	}
-	public void setIs_vegano(boolean is_vegano) {
-		this.is_vegano = is_vegano;
-	}
-	public int getCosto() {
-		return costo;
-	}
-	public void setCosto(int costo) {
-		this.costo = costo;
+	private int id;
+	private String descrizione;
+	private boolean is_vegetariano;
+	private int prezzo;
+
+	public PiattoDto() {}
+	
+	public PiattoDto(String descrizione, boolean is_vegetariano, int prezzo) {
+		super();
+		this.descrizione = descrizione;
+		this.is_vegetariano = is_vegetariano;
+		this.prezzo = prezzo;
 	}
 
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getDescrizione() {
+		return descrizione;
+	}
+	public void setDescrizione(String descrizione) {
+		this.descrizione = descrizione;
+	}
+	public boolean isIs_vegetariano() {
+		return is_vegetariano;
+	}
+	public void setIs_vegetariano(boolean is_vegetariano) {
+		this.is_vegetariano = is_vegetariano;
+	}
+	public int getPrezzo() {
+		return prezzo;
+	}
+	public void setPrezzo(int prezzo) {
+		this.prezzo = prezzo;
+	}
 	
 }
