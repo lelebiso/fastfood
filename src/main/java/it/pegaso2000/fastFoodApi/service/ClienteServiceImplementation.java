@@ -3,13 +3,23 @@ package it.pegaso2000.fastFoodApi.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import it.pegaso2000.fastFoodApi.model.Cliente;
 import it.pegaso2000.fastFoodApi.repo.ClienteRepo;
 
+@Service
 public class ClienteServiceImplementation implements ClienteService{
 
 	private ClienteRepo crepo;
 	
+	@Autowired
+	public ClienteServiceImplementation(ClienteRepo crepo) {
+		super();
+		this.crepo = crepo;
+	}
+
 	@Override
 	public List<Cliente> findAll() {
 		return crepo.findAll();
