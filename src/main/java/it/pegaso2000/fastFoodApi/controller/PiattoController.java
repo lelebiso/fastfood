@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +34,8 @@ public class PiattoController {
 	@GetMapping("/all")
 	public ResponseEntity<List<PiattoDto>> all() {
 		List<Piatto> list = service.findAll();
-		List<PiattoDto> result = list.stream().map(cliente -> {
-			return entityToDto(cliente);
+		List<PiattoDto> result = list.stream().map(piatto -> {
+			return entityToDto(piatto);
 		}).collect(Collectors.toList());
 		return new ResponseEntity<List<PiattoDto>>(result, HttpStatus.OK);
 	}
@@ -50,7 +51,7 @@ public class PiattoController {
 
 	@PostMapping("/save")
 	public ResponseEntity<PiattoDto> save(@RequestBody PiattoDto dto) {
-		Piatto saving = DtoToentity(dto);
+		Piatto saving = dtoToEntity(dto);
 		Piatto saved = service.save(saving);
 		return new ResponseEntity<PiattoDto>(entityToDto(saved), HttpStatus.OK);
 	}
@@ -58,6 +59,19 @@ public class PiattoController {
 	@DeleteMapping("delete/{id}")
 	public boolean delete(@PathVariable int id) {
 		return service.delete(id);
+	}
+
+	@PutMapping("update/{id}")
+	public ResponseEntity<PiattoDto> update(@PathVariable int id, @RequestBody PiattoDto updated) {
+		PiattoDto dto = entityToDto(service.findById(id));
+
+		if (dto != null) {
+			updated.setId(id);
+			Piatto p = service.save(dtoToEntity(updated));
+			return new ResponseEntity<PiattoDto>(entityToDto(p), HttpStatus.OK);
+
+		}
+		return new ResponseEntity<PiattoDto>(HttpStatus.NO_CONTENT);
 	}
 
 	private PiattoDto entityToDto(Piatto p) {
@@ -69,7 +83,7 @@ public class PiattoController {
 		return dto;
 	}
 
-	private Piatto DtoToentity(PiattoDto dto) {
+	private Piatto dtoToEntity(PiattoDto dto) {
 		Piatto p = new Piatto();
 		p.setDescrizione(dto.getDescrizione());
 		p.setIs_vegetariano(dto.isIs_vegetariano());

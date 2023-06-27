@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,7 @@ public class ClienteController {
 
 	@PostMapping("/save")
 	public ResponseEntity<ClienteDto> save(@RequestBody ClienteDto dto) {
-		Cliente saving = DtoToentity(dto);
+		Cliente saving = dtoToEntity(dto);
 		Cliente saved = service.save(saving);
 		return new ResponseEntity<ClienteDto>(entityToDto(saved), HttpStatus.OK);
 	}
@@ -58,6 +59,19 @@ public class ClienteController {
 	@DeleteMapping("delete/{id}")
 	public boolean delete(@PathVariable int id) {
 		return service.delete(id);
+	}
+	
+	@PutMapping("update/{id}")
+	public ResponseEntity<ClienteDto> update(@PathVariable int id, @RequestBody ClienteDto updated) {
+		ClienteDto dto = entityToDto(service.findById(id));
+		
+		if (dto != null) {
+			updated.setId(id);
+			Cliente c = service.save(dtoToEntity(updated));
+					return new ResponseEntity<ClienteDto>(entityToDto(c), HttpStatus.OK);
+
+		}
+		return new ResponseEntity<ClienteDto>(HttpStatus.NO_CONTENT);
 	}
 
 	private ClienteDto entityToDto(Cliente c) {
@@ -69,7 +83,7 @@ public class ClienteController {
 		return dto;
 	}
 
-	private Cliente DtoToentity(ClienteDto dto) {
+	private Cliente dtoToEntity(ClienteDto dto) {
 		Cliente c = new Cliente();
 		c.setNome(dto.getNome());
 		c.setIs_vegetariano(dto.isIs_vegetariano());
